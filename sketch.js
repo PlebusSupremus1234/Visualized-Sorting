@@ -1,5 +1,7 @@
 let array;
 let initial;
+let sorted;
+
 let colW = 5;
 let amount;
 let spacing;
@@ -10,6 +12,7 @@ let i, j, min;
 let sort;
 
 let paused = true;
+let done = false;
 
 function setup() {
     createCanvas(1200 + 450, 800);
@@ -17,15 +20,15 @@ function setup() {
     amount = width / colW;
     spacing = (height - 80) / amount;
     frameRate(60);
-    init("selection");
+    init("bubble");
 }
 
 function draw() {
     background(0);
     
-    if (!paused) {
+    if (!paused && !done) {
         let element = document.getElementById("slider");
-        for (let a = 0; a < Math.ceil((element.value ** 2) / 15); a++) {
+        for (let a = 0; a < Math.ceil((element.value ** 2) / 15) /*a better curve instead of a linear one*/; a++) {
             if (sort === "bubble") {
                 if (j >= i) {
                     if (i < 1) continue;
@@ -34,7 +37,6 @@ function draw() {
                 }
                 if (array[j] > array[j + 1]) [array[j], array[j + 1]] = [array[j + 1], array[j]];
                 j++;
-                currentBar = j;
             } else if (sort === "selection") {
                 if (j >= array.length) {
                     if (i >= array.length - 1) continue;
@@ -45,9 +47,27 @@ function draw() {
                 }
                 if (array[j] < array[min]) min = j;
                 j++;
-                currentBar = j;
+            } else if (sort === "insertion") {
+                if (j >= i) {
+                    if (i >= array.length - 1) continue;
+                    i++;
+                    j = 0;
+                }
+                if (array[i] < array[j]) [array[i], array[j]] = [array[j], array[i]];
+                j++;
             }
+            currentBar = j;
         }
+
+        if (isSorted()) {
+            currentBar = 0;
+            done = true;
+        }
+    }    
+
+    if (done && currentBar < array.length - 1) {
+        currentBar += 8;
+        if (currentBar >= array.length - 1 && !paused) playpause();
     }
 
     stroke(0);
@@ -67,4 +87,6 @@ function draw() {
     textSize(30);
     text("Play or Pause:", width + 15, 90);
     text("Restart:", width + 15, 130);
+    text("Speed:", width + 15, 170);
+    text("Sorting Method:", width + 15, 210);
 }
