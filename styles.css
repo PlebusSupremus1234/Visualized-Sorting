@@ -75,3 +75,7 @@
                  transform: rotate(360deg);
     }
 }
+
+#slider {
+    position: absolute;
+}

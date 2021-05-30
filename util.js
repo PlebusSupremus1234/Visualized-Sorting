@@ -15,6 +15,10 @@ function init(type, same) {
     if (type === "bubble") {
         i = array.length - 1;
         j = 0;
+    } else if (type === "selection") {
+        i = 0;
+        j = i + 1;
+        min = i;
     }
 
     currentBar = null;

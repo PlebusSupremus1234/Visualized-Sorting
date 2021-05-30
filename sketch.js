@@ -5,7 +5,7 @@ let amount;
 let spacing;
 
 let currentBar;
-let i, j;
+let i, j, min;
 
 let sort;
 
@@ -17,21 +17,33 @@ function setup() {
     amount = width / colW;
     spacing = (height - 80) / amount;
     frameRate(60);
-    init("bubble");
+    init("selection");
 }
 
 function draw() {
     background(0);
     
     if (!paused) {
-        for (let a = 0; a < 200; a++) {
+        let element = document.getElementById("slider");
+        for (let a = 0; a < Math.ceil((element.value ** 2) / 15); a++) {
             if (sort === "bubble") {
                 if (j >= i) {
+                    if (i < 1) continue;
                     i--;
                     j = 0;
                 }
-                if (i < 0) noLoop();
                 if (array[j] > array[j + 1]) [array[j], array[j + 1]] = [array[j + 1], array[j]];
+                j++;
+                currentBar = j;
+            } else if (sort === "selection") {
+                if (j >= array.length) {
+                    if (i >= array.length - 1) continue;
+                    [array[min], array[i]] = [array[i], array[min]];
+                    i++;
+                    min = i;
+                    j = i + 1;
+                }
+                if (array[j] < array[min]) min = j;
                 j++;
                 currentBar = j;
             }
