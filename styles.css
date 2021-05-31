@@ -1,96 +1,193 @@
 #playpause {
-    border: 0;
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5);
-    left: 1425px;
-    top: 51px;
-    background: transparent;
-    position: absolute;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    width: 0;
-    height: 74px;
-    border-color: transparent transparent transparent black;
-    -webkit-transition: 100ms all ease;
-    transition: 100ms all ease;
-    cursor: pointer;
-    border-style: solid;
-    border-width: 37px 0 37px 60px;
-}
-
-#playpause.paused {
-    border-style: double;
-    border-width: 0px 0 0px 60px;
+  border: 0;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  left: 1425px;
+  top: 51px;
+  background: transparent;
+  position: absolute;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 0;
+  height: 74px;
+  border-color: transparent transparent transparent black;
+  -webkit-transition: 100ms all ease;
+  transition: 100ms all ease;
+  cursor: pointer;
+  border-style: solid;
+  border-width: 37px 0 37px 60px;
 }
 
 #playpause:hover {
-    border-color: transparent transparent transparent black;
+  border-color: transparent transparent transparent black;
+}
+
+#playpause.paused {
+  border-style: double;
+  border-width: 0px 0 0px 60px;
 }
 
 #restart {
-    position: absolute;
-    color: black;
-    font-size: 37px;
-    left: 1350px;
-    top: 110px;
-    -webkit-transition: -webkit-transform 0.3s;
-    transition: -webkit-transform 0.3s;
-    transition: transform 0.3s;
-    transition: transform 0.3s, -webkit-transform 0.3s;
-    -webkit-animation-fill-mode: backwards;
-            animation-fill-mode: backwards;
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
+  position: absolute;
+  color: black;
+  font-size: 37px;
+  left: 1350px;
+  top: 110px;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 #restart:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #restart.clicked {
-    -webkit-animation: rotate 0.8s;
-            animation: rotate 0.8s;
+  -webkit-animation: rotate 0.8s;
+          animation: rotate 0.8s;
 }
 
 @-webkit-keyframes rotate {
-    from {
-        -webkit-transform: rotate(0deg);
-                transform: rotate(0deg);
-    }
-    to {
-        -webkit-transform: rotate(360deg);
-                transform: rotate(360deg);
-    }
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
 }
 
 @keyframes rotate {
-    from {
-        -webkit-transform: rotate(0deg);
-                transform: rotate(0deg);
-    }
-    to {
-        -webkit-transform: rotate(360deg);
-                 transform: rotate(360deg);
-    }
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
 }
 
 #slider {
-    position: absolute;
-    width: 250px;
-    top: 158px;
-    left: 1335px;
+  position: absolute;
+  width: 250px;
+  top: 158px;
+  left: 1335px;
 }
 
 #select {
-    position: absolute;
-    top: 194px;
-    left: 1465px;
-    width: 150px;
-    padding: 4px;
-    border-radius: 5px;
-    background-color: white;
-    font-family: sans-serif;
-    font-size: 15px;
+  position: absolute;
+  top: 194px;
+  left: 1465px;
+  width: 150px;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: white;
+  font-family: sans-serif;
+  font-size: 15px;
+}
+
+#header {
+  position: absolute;
+  color: white;
+  font-family: sans-serif;
+  font-size: 22px;
+  margin-top: 8px;
+  margin-left: 13px;
+}
+
+#btn {
+  background-color: #00a2ff;
+  border-radius: 10px;
+  position: absolute;
+  color: white;
+  top: 240px;
+  left: 1224px;
+  font-family: sans-serif;
+  font-size: 18px;
+  padding: 12px;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+#btn:hover {
+  background-color: #0092e6;
+}
+
+#checkbox-container {
+  position: absolute;
+  margin: 0px;
+  top: 350px;
+  left: 1222px;
+}
+
+#checkbox-container div p {
+  margin: 0px;
+  margin-bottom: 8px;
+  padding: 0px;
+  font-family: sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+#checkbox-container div input {
+  margin-left: 12px;
+  position: absolute;
+  display: inline;
+  cursor: pointer;
+  height: 28px;
+  width: 28px;
+  background-color: #eee;
+}
+
+#checkbox-container div input:hover {
+  background-color: #ccc;
+}
+
+#checkbox-container div input:checked {
+  background-color: #2196F3;
+}
+
+#checkbox-container div input:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+#element-config p {
+  display: inline-block;
+  margin: 0px;
+  position: absolute;
+  left: 1222px;
+  top: 300px;
+  font-family: sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#element-config input {
+  position: absolute;
+  display: inline;
+  width: 50px;
+  height: 25px;
+  top: 303px;
+  left: 1535px;
+  padding-left: 10px;
+  font-size: 15px;
 }

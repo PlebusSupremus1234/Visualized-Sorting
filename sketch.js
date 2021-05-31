@@ -2,17 +2,20 @@ let array;
 let initial;
 let sorted;
 
+let sort;
+
 let colW = 5;
 let amount;
 let spacing;
 
 let currentBar;
 let i, j, min;
-
-let sort;
+let comparisons = 0;
 
 let paused = true;
 let done = false;
+
+let showCurrentBar = true;
 
 function setup() {
     createCanvas(1200 + 450, 800);
@@ -20,7 +23,7 @@ function setup() {
     amount = width / colW;
     spacing = (height - 80) / amount;
     frameRate(60);
-    init("bubble");
+    init("bubble", true);
 }
 
 function draw() {
@@ -57,6 +60,7 @@ function draw() {
                 j++;
             }
             currentBar = j;
+            comparisons++;
         }
 
         if (isSorted()) {
@@ -72,9 +76,11 @@ function draw() {
 
     stroke(0);
     for (let a = 0; a < array.length; a++) {
-        fill(a === currentBar ? "red" : 255);
+        fill(a === currentBar && showCurrentBar ? "red" : 255);
         rect(a * colW, height - array[a], colW, array[a]);
     }
+
+    document.getElementById("header").innerHTML = `${sort.charAt(0).toUpperCase() + sort.slice(1)} Sort - ${comparisons} Comparisons - Made by Plebus Supremus`;
 
     fill("#ebebeb");
     noStroke();
@@ -89,4 +95,7 @@ function draw() {
     text("Restart:", width + 15, 130);
     text("Speed:", width + 15, 170);
     text("Sorting Method:", width + 15, 210);
+
+    let val = parseInt(document.getElementById("element-amt").value);
+    if (array.length !== val) init(sort, true, false, val);
 }

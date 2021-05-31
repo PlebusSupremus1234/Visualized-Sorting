@@ -1,8 +1,13 @@
-function init(type, newA, same) {
+function init(type, newA, same, arrLength) {
     if (!paused && !same) playpause();
-    if (!newA) {
+    if (newA) {
         array = [];
-        for (let a = 0; a < amount; a++) array.push(a * spacing);
+        if (arrLength && arrLength !== amount) {
+            amount = arrLength;
+            colW = width / amount;
+            spacing = (height - 80) / amount;
+        }
+        for (let a = 0; a < amount; a++) array.push((a + 1) * spacing);
         sorted = [].concat(array);
         for (let a = array.length - 1; a > 0; a--) {
             let b = Math.floor(Math.random() * (a + 1));
@@ -15,6 +20,7 @@ function init(type, newA, same) {
     }
 
     done = false;
+    comparisons = 0;
     sort = type;
     if (type === "bubble") {
         i = array.length - 1;
@@ -51,11 +57,20 @@ function restart() {
         element.classList.toggle("clicked");
         setTimeout(() => element.classList.toggle("clicked"), 800);
 
-        init(sort, true);
+        init(sort, false);
     }
 }
 
 function changeAlg() {
     let element = document.getElementById("select");
-    if (element.value !== sort) init(element.value, true, true);
+    if (element.value !== sort) init(element.value, false, true);
+}
+
+function toggle(num) {
+    if (num === 0) showCurrentBar = !showCurrentBar;
+}
+
+function manageInp(el) {
+    el.value = el.value.replace(/\D/g,'');
+    if (parseInt(el.value) > 500) el.value = "500";
 }

@@ -1,0 +1,178 @@
+#playpause {
+    border: 0;
+    transform: scale(0.5);
+    left: 1425px;
+    top: 51px;
+    background: transparent;
+    position: absolute;
+    box-sizing: border-box;
+    width: 0;
+    height: 74px;
+    border-color: transparent transparent transparent black;
+    transition: 100ms all ease;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 37px 0 37px 60px;
+
+    &:hover {
+        border-color: transparent transparent transparent black;
+    }
+
+    &.paused {
+        border-style: double;
+        border-width: 0px 0 0px 60px;
+    }
+}
+
+#restart {
+    position: absolute;
+    color: black;
+    font-size: 37px;
+    left: 1350px;
+    top: 110px;
+    transition: transform 0.3s;
+    user-select: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.clicked {
+        animation: rotate 0.8s;
+    }
+}
+
+@-webkit-keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#slider {
+    position: absolute;
+    width: 250px;
+    top: 158px;
+    left: 1335px;
+}
+
+#select {
+    position: absolute;
+    top: 194px;
+    left: 1465px;
+    width: 150px;
+    padding: 4px;
+    border-radius: 5px;
+    background-color: white;
+    font-family: sans-serif;
+    font-size: 15px;
+}
+
+#header {
+    position: absolute;
+    color: white;
+    font-family: sans-serif;
+    font-size: 22px;
+    margin-top: 8px;
+    margin-left: 13px;
+}
+
+#btn {
+    background-color: #00a2ff;
+    border-radius: 10px;
+    position: absolute;
+    color: white;
+    top: 240px;
+    left: 1224px;
+    font-family: sans-serif;
+    font-size: 18px;
+    padding: 12px;
+    transition: all 0.2s;
+    user-select: none;
+
+    &:hover {
+        background-color: #0092e6;
+    }
+}
+
+#checkbox-container {
+    position: absolute;
+    margin: 0px;
+    top: 350px;
+    left: 1222px;
+
+    & div {
+        & p {
+            margin: 0px;
+            margin-bottom: 8px;
+            padding: 0px;
+            font-family: sans-serif;
+            font-size: 30px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        & input {
+            margin-left: 12px;
+            position: absolute;
+            display: inline;
+            cursor: pointer;
+            height: 28px;
+            width: 28px;
+            background-color: #eee;
+
+            &:hover {
+                background-color: #ccc;
+            }
+
+            &:checked {
+                background-color: #2196F3;
+            }
+
+            &:after {
+                left: 9px;
+                top: 5px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 3px 3px 0;
+                transform: rotate(45deg);
+            }
+        }
+    }
+}
+
+#element-config {
+    & p {
+        display: inline-block;
+        margin: 0px;
+        position: absolute;
+        left: 1222px;
+        top: 300px;
+        font-family: sans-serif;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    & input {
+        position: absolute;
+        display: inline;
+        width: 50px;
+        height: 25px;
+        top: 303px;
+        left: 1535px;
+        padding-left: 10px;
+        font-size: 15px;
+    }
+}
