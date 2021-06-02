@@ -8,9 +8,10 @@ let colW = 5;
 let amount;
 let spacing;
 
-let currentBar;
-let i, j, min;
+let currentBar = [];
+let i, j, m;
 let comparisons = 0;
+let frames = [];
 
 let paused = true;
 let done = false;
@@ -31,7 +32,7 @@ function draw() {
     
     if (!paused && !done) {
         let element = document.getElementById("slider");
-        for (let a = 0; a < Math.ceil((element.value ** 2) / 15) /*a better curve instead of a linear one*/; a++) {
+        for (let a = 0; a < Math.ceil((element.value ** 2) / 15); a++) {
             if (sort === "bubble") {
                 if (j >= i) {
                     if (i < 1) continue;
@@ -43,12 +44,12 @@ function draw() {
             } else if (sort === "selection") {
                 if (j >= array.length) {
                     if (i >= array.length - 1) continue;
-                    [array[min], array[i]] = [array[i], array[min]];
+                    [array[m], array[i]] = [array[i], array[m]];
                     i++;
-                    min = i;
+                    m = i;
                     j = i + 1;
                 }
-                if (array[j] < array[min]) min = j;
+                if (array[j] < array[m]) m = j;
                 j++;
             } else if (sort === "insertion") {
                 if (j >= i) {
@@ -58,25 +59,33 @@ function draw() {
                 }
                 if (array[i] < array[j]) [array[i], array[j]] = [array[j], array[i]];
                 j++;
+            } else if (sort === "quick") {
+                if (i > frames.length - 1) continue;
+                if (a % 10 === 0) {
+                    array = frames[i].slice(1);
+                    i++;
+                }
             }
-            currentBar = j;
+            //fix comparison amt for quicksort
+            currentBar = [j];
+            if (sort === "quick") currentBar = frames[i - 1][0];
             comparisons++;
         }
 
-        if (isSorted()) {
-            currentBar = 0;
+        if (isEqual(array, sorted)) {
+            currentBar = [0];
             done = true;
         }
     }    
 
-    if (done && currentBar < array.length - 1) {
-        currentBar += 8;
-        if (currentBar >= array.length - 1 && !paused) playpause();
+    if (done && currentBar[0] < array.length - 1) {
+        currentBar[0] += 8;
+        if (currentBar[0] >= array.length - 1 && !paused) playpause();
     }
 
-    stroke(0);
+    if (array.length < 450) stroke(0);
     for (let a = 0; a < array.length; a++) {
-        fill(a === currentBar && showCurrentBar ? "red" : 255);
+        fill(currentBar.includes(a) && showCurrentBar ? "red" : 255);
         rect(a * colW, height - array[a], colW, array[a]);
     }
 
@@ -97,5 +106,5 @@ function draw() {
     text("Sorting Method:", width + 15, 210);
 
     let val = parseInt(document.getElementById("element-amt").value);
-    if (array.length !== val) init(sort, true, false, val);
+    if (array.length !== val && !isNaN(val)) init(sort, true, false, val);
 }
