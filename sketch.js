@@ -17,9 +17,11 @@ let paused = true;
 let done = false;
 
 let showCurrentBar = true;
+let showColors = false;
 
 function setup() {
     createCanvas(1200 + 450, 800);
+    colorMode(HSB);
     width = 1200;
     amount = width / colW;
     spacing = (height - 80) / amount;
@@ -60,24 +62,41 @@ function draw() {
                 if (array[i] < array[j]) [array[i], array[j]] = [array[j], array[i]];
                 j++;
             } else if (sort === "quick") {
-                if (i > frames.length - 1) continue;
-                if (a % 10 === 0) {
-                    array = frames[i].slice(1);
-                    i++;
+                if (a % 15 === 0) {
+                    if (i >= frames.length) {
+                        if (array.length < 300) continue;
+                        else {
+                            if (j.length > 0) {
+                                let l = frames.length;
+                                while (l === frames.length && j[0]) {
+                                    let coords = QuickSort([].concat(array), j[0][0][0], j[0][0][1], false);
+                                    j[0].splice(0, 1);
+                                    if (j[0].length === 0) j.splice(0, 1);
+                                    if (coords) j.splice(0, 0, coords);
+                                }
+                            }
+                        }
+                    }
+
+                    if (i < frames.length) {
+                        array = frames[i].slice(1);
+                        comparisons += frames[i][0][0];
+                        i++;
+                    }
                 }
             }
-            //fix comparison amt for quicksort
+
             currentBar = [j];
-            if (sort === "quick") currentBar = frames[i - 1][0];
-            comparisons++;
+            if (sort === "quick") currentBar = frames[i - 1][0].slice(1);
+            else comparisons++;
         }
 
         if (isEqual(array, sorted)) {
             currentBar = [0];
             done = true;
         }
-    }    
-
+    }
+    
     if (done && currentBar[0] < array.length - 1) {
         currentBar[0] += 8;
         if (currentBar[0] >= array.length - 1 && !paused) playpause();
@@ -85,10 +104,11 @@ function draw() {
 
     if (array.length < 450) stroke(0);
     for (let a = 0; a < array.length; a++) {
-        fill(currentBar.includes(a) && showCurrentBar ? "red" : 255);
+        let color = currentBar.includes(a) && showCurrentBar ? [0, 100, 100] : (showColors ? [(array[a] / 1200) * 540 - 20, 100, 100] : [0, 0, 100]);
+        fill(...color);
         rect(a * colW, height - array[a], colW, array[a]);
     }
-
+    //add cooldown for generate new set button
     document.getElementById("header").innerHTML = `${sort.charAt(0).toUpperCase() + sort.slice(1)} Sort - ${comparisons} Comparisons - Made by Plebus Supremus`;
 
     fill("#ebebeb");

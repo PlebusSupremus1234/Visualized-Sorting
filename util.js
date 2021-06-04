@@ -35,17 +35,16 @@ function init(type, newA, same, arrLength) {
     } else if (type === "quick") {
         frames = [];
         i = 0;
-        QuickSort([].concat(array), 0, array.length - 1);
+        j = [];
+        if (array.length < 300) QuickSort([].concat(array), 0, array.length - 1, true);
+        else {
+            let coords = QuickSort([].concat(array), 0, array.length - 1, false);
+            if (coords) j.push(coords);
+        }
         frames = frames.filter((a, b) => b - 1 >= 0 && !isEqual(a, frames[b - 1].slice(1)));
     }
 
     currentBar = [];
-}
-
-function playpause() {
-    let element = document.getElementById("playpause");
-    element.classList.toggle("paused");
-    paused = !paused;
 }
 
 function isEqual(a, b) {
@@ -66,39 +65,25 @@ function restart() {
     }
 }
 
-function changeAlg() {
-    let element = document.getElementById("select");
-    if (element.value !== sort) init(element.value, false, true);
-}
-
-function toggle(num) {
-    if (num === 0) showCurrentBar = !showCurrentBar;
-}
-
-function manageInp(el) {
-    el.value = el.value.replace(/\D/g,'');
-    if (parseInt(el.value) === 0) el.value = "1";
-    if (parseInt(el.value) > 1200) el.value = "1200";
-}
-
-function QuickSort(a, low, high) {
+function QuickSort(a, low, high, continuous) {
     if (low < high) {
         let pivot = a[high];
         let b = low - 1;
         for (let j = low; j < high; j++) {
             if (a[j] < pivot) {
-                frames.push([[low, j, high]].concat(a));
+                frames.push([[1, low, j, high]].concat(a));
                 b++;
                 [a[b], a[j]] = [a[j], a[b]];
-                frames.push([[low, j, high]].concat(a));
+                frames.push([[1, low, j, high]].concat(a));
             }
-            comparisons++;
         }
-        frames.push([[low, b, high]].concat(a));
+        frames.push([[0, low, b, high]].concat(a));
         b++;
         [a[high], a[b]] = [a[b], a[high]];
-        frames.push([[low, b, high]].concat(a));
-        QuickSort(a, low, b - 1);
-        QuickSort(a, b + 1, high);
+        frames.push([[0, low, b, high]].concat(a));
+        if (continuous) {
+            QuickSort(a, low, b - 1, true);
+            QuickSort(a, b + 1, high, true);
+        } else return [[low, b - 1], [b + 1, high]];
     }
 }
