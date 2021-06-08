@@ -18,14 +18,17 @@
         <span id="restart" class="fa" onclick="restart()">&#xf021;</span>
 
         <input type="range" min="1" max="100" value="40" id="slider">
-        <label type="button" id="btn" onclick="init(sort, true);">Generate New Random Set</label>
+        <label type="button" id="btn" onclick="newSet(this)">Generate New Random Set</label>
         <div id="element-config"><p>Number of Elements:</p><input id="element-amt" type="number" min="1" max="1200" value="240" oninput="manageInp(this)"></div>
         <p id="minmax">(Min: 1, Max: 1200)</p>
 
         <div id="checkbox-container">
             <div><p>Show Current Bars:</p><input type="checkbox" onclick="toggle(0)" checked></div>
-            <div><p>Toggle Colors:</p><input type="checkbox" onclick="toggle(1)"></div>
+            <div><p>Show Colors:</p><input type="checkbox" onclick="toggle(1)"></div>
         </div>
+
+        <div id="cshift"><p>Color Shift (0):</p><input type="range" min="0" max="100" value="50"></div>
+
         <select id="select" onclick="changeAlg()">
             <option value="bubble">Bubble Sort</option>
             <option value="selection">Selection Sort</option>

@@ -18,6 +18,7 @@ let done = false;
 
 let showCurrentBar = true;
 let showColors = false;
+let cshift = 0;
 
 function setup() {
     createCanvas(1200 + 450, 800);
@@ -61,6 +62,12 @@ function draw() {
                 }
                 if (array[i] < array[j]) [array[i], array[j]] = [array[j], array[i]];
                 j++;
+            } else if (sort === "merge") {
+                if (a % 15 === 0) {
+                    if (i >= frames.length) continue;
+                    array = frames[i].slice(1);
+                    i++;
+                }
             } else if (sort === "quick") {
                 if (a % 15 === 0) {
                     if (i >= frames.length) {
@@ -104,12 +111,12 @@ function draw() {
 
     if (array.length < 450) stroke(0);
     for (let a = 0; a < array.length; a++) {
-        let color = currentBar.includes(a) && showCurrentBar ? [0, 100, 100] : (showColors ? [(array[a] / 1200) * 540 - 20, 100, 100] : [0, 0, 100]);
+        let color = currentBar.includes(a) && showCurrentBar ? [0, 100, 100] : (showColors ? [(array[a] / 1200) * 540 + cshift - 30, 100, 100] : [0, 0, 100]);
         fill(...color);
         rect(a * colW, height - array[a], colW, array[a]);
     }
-    //add cooldown for generate new set button
-    document.getElementById("header").innerHTML = `${sort.charAt(0).toUpperCase() + sort.slice(1)} Sort - ${comparisons} Comparisons - Made by Plebus Supremus`;
+    
+    manageElements();
 
     fill("#ebebeb");
     noStroke();

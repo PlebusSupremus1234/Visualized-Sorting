@@ -28,10 +28,14 @@ function init(type, newA, same, arrLength) {
     } else if (type === "selection") {
         i = 0;
         j = i + 1;
-        min = i;
+        m = i;
     } else if (type === "insertion") {
         i = 1;
         j = 0;
+    } else if (type === "merge") {
+        i = 0;
+        frames = [];
+        MergeSort(array);
     } else if (type === "quick") {
         frames = [];
         i = 0;
@@ -55,16 +59,6 @@ function isEqual(a, b) {
     return true;
 }
 
-function restart() {
-    let element = document.getElementById("restart");
-    if (!element.classList.contains("clicked")) {
-        element.classList.toggle("clicked");
-        setTimeout(() => element.classList.toggle("clicked"), 800);
-
-        init(sort, false);
-    }
-}
-
 function QuickSort(a, low, high, continuous) {
     if (low < high) {
         let pivot = a[high];
@@ -74,10 +68,10 @@ function QuickSort(a, low, high, continuous) {
                 frames.push([[1, low, j, high]].concat(a));
                 b++;
                 [a[b], a[j]] = [a[j], a[b]];
-                frames.push([[1, low, j, high]].concat(a));
+                frames.push([[0, low, j, high]].concat(a));
             }
         }
-        frames.push([[0, low, b, high]].concat(a));
+        frames.push([[1, low, b, high]].concat(a));
         b++;
         [a[high], a[b]] = [a[b], a[high]];
         frames.push([[0, low, b, high]].concat(a));
@@ -86,4 +80,26 @@ function QuickSort(a, low, high, continuous) {
             QuickSort(a, b + 1, high, true);
         } else return [[low, b - 1], [b + 1, high]];
     }
+}
+
+function MergeSort(a, continuous) {
+    let l = [];
+    l.push([].concat(a.map(b => [b])));
+    while (!isEqual(l[l.length - 1].flat(), sorted)) {
+        for (let i = 0; i < l[0].length; i += 2) {
+            let b = l[l.length - 1];
+            if (!b[i]) continue;
+            let newA = [].concat(b);
+            if (b[i + 1]) {
+                let o = [];
+                let left = [].concat(b[i]);
+                let right = [].concat(b[i + 1]);
+                while (left.length > 0 && right.length > 0) o.push(left[0] < right[0] ? left.shift() : right.shift());
+                newA.splice(i, 2, [...o, ...left, ...right]);
+                i--;
+            } else newA.splice(i, 1, b[i]);
+            l.push([].concat(newA));
+        }
+    }
+    frames = l.map(b => [[]].concat(b.flat()));
 }
