@@ -111,7 +111,7 @@ function draw() {
 
     if (array.length < 450) stroke(0);
     for (let a = 0; a < array.length; a++) {
-        let color = currentBar.includes(a) && showCurrentBar ? [0, 100, 100] : (showColors ? [(array[a] / 1200) * 540 + cshift - 30, 100, 100] : [0, 0, 100]);
+        let color = currentBar.includes(a) && showCurrentBar ? [0, 255, 255] : (showColors ? [(array[a] / 1200) * 540 + cshift - 30, 255, 255] : [0, 0, 255]);
         fill(...color);
         rect(a * colW, height - array[a], colW, array[a]);
     }
