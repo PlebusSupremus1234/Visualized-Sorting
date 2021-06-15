@@ -12,30 +12,29 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.min.js"></script>
 	    <script type="text/javascript" src="sketch.js"></script>
 	    <script type="text/javascript" src="util.js"></script>
-	    <script type="text/javascript" src="dom.js"></script>
 	    <script type="text/javascript" src="sorts.js"></script>
+	    <script type="text/javascript" src="dom.js"></script>
 
         <p id="header"></p>
-        <button id="playpause" onclick="playpause()"></button>
-        <span id="restart" class="fa" onclick="restart()">&#xf021;</span>
+        <button id="playpause" onclick="toggle(1)"></button>
+        <span id="restart" class="fa" onclick="toggle(2)">&#xf021;</span>
 
         <input type="range" min="1" max="100" value="40" id="slider">
-        <label type="button" id="btn" onclick="newSet(this)">Generate New Random Set</label>
-        <div id="element-config"><p>Number of Elements:</p><input id="element-amt" type="number" min="1" max="1200" value="240" oninput="manageInp(this)"></div>
+        <label type="button" id="btn" onclick="toggle(3)">Generate New Random Set</label>
+        <div id="element-config"><p>Number of Elements:</p><input id="element-amt" type="number" min="1" max="1200" value="240" oninput="manage('input')"></div>
         <p id="minmax">(Min: 1, Max: 1200)</p>
 
         <div id="checkbox-container">
-            <div><p>Show Current Bars:</p><input type="checkbox" onclick="toggle(0)" checked></div>
-            <div><p>Show Colors:</p><input type="checkbox" onclick="toggle(1)"></div>
+            <div><p>Show Current Bars:</p><input type="checkbox" onclick="toggle(4)" checked></div>
+            <div><p>Show Colors:</p><input type="checkbox" onclick="toggle(5)"></div>
         </div>
 
         <div id="cshift"><p>Color Shift (0):</p><input type="range" min="0" max="100" value="50"></div>
 
-        <select id="select" onclick="changeAlg()">
+        <select id="select" onclick="if (this.value !== sort) init({ type: this.value, newA: false });">
             <option value="bubble">Bubble Sort</option>
             <option value="selection">Selection Sort</option>
             <option value="insertion">Insertion Sort</option>
-            <option value="heap">Heap Sort</option>
             <option value="merge">Merge Sort</option>
             <option value="quick">Quick Sort</option>
         </select>

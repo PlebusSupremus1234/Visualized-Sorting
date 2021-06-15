@@ -1,28 +1,24 @@
-function init(type, newA, same, arrLength) {
-    if (!paused && !same) playpause();
+function init({ type, newA, length, initialA }) {
     if (newA) {
-        array = [];
-        if (arrLength && arrLength !== amount) {
-            amount = arrLength;
-            colW = width / amount;
-            spacing = (height - 80) / amount;
+        let l = length ? length : array.length;
+        sorted = [];
+        for (let i = 0; i < l; i++) sorted.push(i + 1);
+        array = sorted.slice();
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
-        for (let a = 0; a < amount; a++) array.push(Math.round(((a + 1) * spacing + Number.EPSILON) * 1000000) / 1000000);
-        sorted = [].concat(array);
-        for (let a = array.length - 1; a > 0; a--) {
-            let b = Math.floor(Math.random() * (a + 1));
-            [array[a], array[b]] = [array[b], array[a]];
-        }
-
-        initial = [].concat(array);
+        initial = array.slice();
+        spacing = (height - 80) / l;
     } else {
-        if (!same) array = [].concat(initial);
+        if (initialA) array = initial.slice();
     }
-
-    done = false;
-    comparisons = 0;
     sort = type;
-    if (type === "bubble") {
+    done = false;
+    if (!paused) toggle(1);
+    frames = [];
+    i = 0;
+    if (sort === "bubble") {
         i = array.length - 1;
         j = 0;
     } else if (type === "selection") {
@@ -33,28 +29,15 @@ function init(type, newA, same, arrLength) {
         i = 1;
         j = 0;
     } else if (type === "merge") {
-        i = 0;
-        frames = [];
-        MergeSort([].concat(array));
-    } else if (type === "quick") {
-        frames = [];
-        i = 0;
-        j = [];
-        if (array.length < 300) QuickSort([].concat(array), 0, array.length - 1, true);
-        else {
-            let coords = QuickSort([].concat(array), 0, array.length - 1, false);
-            if (coords) j.push(coords);
-        }
-        frames = frames.filter((a, b) => b - 1 >= 0 && !isEqual(a, frames[b - 1].slice(1)));
+        m = array.slice().map(a => [a]);
+        j = 0;
     }
-
-    currentBar = [];
 }
 
 function isEqual(a, b) {
     if (!a || !b || a.length !== b.length) return false;
-    for (let x = 0; x < a.length; x++) {
-        if (a[x] !== b[x]) return false;
+    for (let c = 0; c < a.length; c++) {
+        if (a[c] !== b[c]) return false;
     }
     return true;
 }
