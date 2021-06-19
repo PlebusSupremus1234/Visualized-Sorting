@@ -25,7 +25,8 @@ function setup() {
 
 /*
     Todo:
-    - Merge sort optimisations for larger arrays
+    - Correct Merge Sort Comparisons
+    - Further optimise quicksort
     - Fix timing for sorts
     - Add quick sort
 */
@@ -72,33 +73,55 @@ function draw() {
             } else if (sort === "merge") {
                 if (a % 15 === 0) {
                     if (i >= frames.length) {
-                        let b = _.cloneDeep(m);
-                        for (let i = j; i < (j + 10 > b.length ? b.length : j + 10); i++) { //limits to max 10 executions
-                            if (b[i] && b[i + 1]) {
-                                let left = b[i].slice();
-                                let right = b[i + 1].slice();
-                                let joined = left.concat(right);
-                                for (let k = 0; k < joined.length; k++) frames.push([[b.flat().indexOf(joined[k])]].concat(b.flat()));
-                                let s = [];
-                                while (left.length > 0 && right.length > 0) s.push(left[0] < right[0] ? left.shift() : right.shift());
-                                s = s.concat(left).concat(right);
-                                b.splice(i, 0, []);
-                                for (let k = 0; k < s.length; k++) {
-                                    b[i].push(s[k]);
-                                    b[i + 1].shift();
-                                    if (b[i + 1].length === 0) b.splice(i + 1, 1);
-                                    frames.push([[b.flat().indexOf(s[k])]].concat(b.flat()));
+                        if (m[j] && m[j + 1]) {
+                            let left = m[j].slice();    
+                            let right = m[j + 1].slice();
+                            let joined = left.concat(right);
+                            let flattened = m.flat();
+                            let start = flattened.indexOf(joined[0]);
+                            for (let k = 0; k < joined.length; k++) frames.push([[start + k], ...flattened]);
+                            let s = [];
+                            while (left.length > 0 && right.length > 0) s.push(left[0] < right[0] ? left.shift() : right.shift());
+                            s = [...s, ...left, ...right];
+                            m[j] = [...m[j], ...m[j + 1]];
+                            m.splice(j + 1, 1);
+                            start = m.flat().indexOf(s[0]);
+                            for (let k = 0; k < s.length; k++) {
+                                m[j][k] = s[k];
+                                frames.push([[start + k], ...m.flat()]);
+                            }
+                        }
+                        j++;
+                        if (j >= m.length) j = 0;
+                    }
+                    if (frames[i]) {
+                        array = frames[i].slice(1);
+                        currBars = frames[i][0];
+                        i++;
+                    }
+                }
+            } else if (sort === "quick") {
+                if (a % 15 === 0) {
+                    if (i >= frames.length) {
+                        if (array.length < 300) continue;
+                        else {
+                            if (j.length > 0) {
+                                let l = frames.length;
+                                while (l === frames.length && j[0]) {
+                                    let coords = QuickSort([].concat(array), j[0][0][0], j[0][0][1], false);
+                                    j[0].splice(0, 1);
+                                    if (j[0].length === 0) j.splice(0, 1);
+                                    if (coords) j.splice(0, 0, coords);
                                 }
                             }
-                            j++;
-                            if (j >= b.length) j = 0;
                         }
-                        m = _.cloneDeep(b);
-                        //continue;
                     }
-                    array = frames[i].slice(1);
-                    currBars = frames[i][0];
-                    i++;
+
+                    if (i < frames.length) {
+                        array = frames[i].slice(1);
+                        comparisons += frames[i][0][0];
+                        i++;
+                    }
                 }
             }
         }

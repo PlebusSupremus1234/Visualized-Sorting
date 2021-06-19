@@ -31,6 +31,15 @@ function init({ type, newA, length, initialA }) {
     } else if (type === "merge") {
         m = array.slice().map(a => [a]);
         j = 0;
+    } else if (type === "quick") {
+        frames = [];
+        i = 0;
+        j = [];
+        if (array.length < 300) QuickSort([].concat(array), 0, array.length - 1, true);
+        else {
+            let coords = QuickSort([].concat(array), 0, array.length - 1, false);
+            if (coords) j.push(coords);
+        }
     }
 }
 
