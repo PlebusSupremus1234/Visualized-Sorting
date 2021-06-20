@@ -23,14 +23,6 @@ function setup() {
     init({ type: "bubble", newA: true, length: 240 });
 }
 
-/*
-    Todo:
-    - Correct Merge Sort Comparisons
-    - Further optimise quicksort
-    - Fix timing for sorts
-    - Add quick sort
-*/
-
 function draw() {
     background("#ebebeb");
     noStroke();
@@ -76,10 +68,10 @@ function draw() {
                         if (m[j] && m[j + 1]) {
                             let left = m[j].slice();    
                             let right = m[j + 1].slice();
-                            let joined = left.concat(right);
+                            let joined = [...left, ...right];
                             let flattened = m.flat();
                             let start = flattened.indexOf(joined[0]);
-                            for (let k = 0; k < joined.length; k++) frames.push([[start + k], ...flattened]);
+                            for (let k = 0; k < joined.length; k++) frames.push([[1, start + k], ...flattened]);
                             let s = [];
                             while (left.length > 0 && right.length > 0) s.push(left[0] < right[0] ? left.shift() : right.shift());
                             s = [...s, ...left, ...right];
@@ -88,7 +80,7 @@ function draw() {
                             start = m.flat().indexOf(s[0]);
                             for (let k = 0; k < s.length; k++) {
                                 m[j][k] = s[k];
-                                frames.push([[start + k], ...m.flat()]);
+                                frames.push([[0, start + k], ...m.flat()]);
                             }
                         }
                         j++;
@@ -96,22 +88,38 @@ function draw() {
                     }
                     if (frames[i]) {
                         array = frames[i].slice(1);
-                        currBars = frames[i][0];
+                        currBars = frames[i][0].slice(1);
+                        comparisons += frames[i][0][0];
                         i++;
                     }
                 }
             } else if (sort === "quick") {
                 if (a % 15 === 0) {
                     if (i >= frames.length) {
-                        if (array.length < 300) continue;
-                        else {
-                            if (j.length > 0) {
-                                let l = frames.length;
-                                while (l === frames.length && j[0]) {
-                                    let coords = QuickSort([].concat(array), j[0][0][0], j[0][0][1], false);
-                                    j[0].splice(0, 1);
-                                    if (j[0].length === 0) j.splice(0, 1);
-                                    if (coords) j.splice(0, 0, coords);
+                        if (j.length > 0) {
+                            let l = frames.length;
+                            while (l === frames.length && j[0]) {
+                                let left = j[0][0][0];
+                                let right = j[0][0][1];
+                                j[0].splice(0, 1);
+                                if (j[0].length === 0) j.splice(0, 1);
+                                if (left < right) {
+                                    let pivot = array[right];
+                                    let b = left - 1;
+                                    for (let j = left; j < right; j++) {
+                                        if (array[j] < pivot) {
+                                            frames.push([[1, left, j, right], ...array]);
+                                            b++;
+                                            [array[b], array[j]] = [array[j], array[b]];
+                                            frames.push([[1, left, j, right], ...array]);
+                                        }
+                                    }
+                                    frames.push([[0, left, b, right], ...array]);
+                                    b++;
+                                    [array[right], array[b]] = [array[b], array[right]];
+                                    array[b] = pivot;
+                                    frames.push([[0, left, b, right], ...array]);
+                                    j.splice(0, 0, [[left, b - 1], [b + 1, right]]);
                                 }
                             }
                         }
@@ -120,6 +128,7 @@ function draw() {
                     if (i < frames.length) {
                         array = frames[i].slice(1);
                         comparisons += frames[i][0][0];
+                        currBars = frames[i][0].slice(1);
                         i++;
                     }
                 }
@@ -132,7 +141,7 @@ function draw() {
     }
 
     if (done && currBars[0] < array.length - 1) {
-        currBars[0] += 8;
+        currBars[0] += Math.floor(array.length / 40);
         if (currBars[0] >= array.length - 1 && !paused) toggle(1);
     }
 

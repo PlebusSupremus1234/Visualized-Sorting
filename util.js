@@ -15,6 +15,7 @@ function init({ type, newA, length, initialA }) {
     }
     sort = type;
     done = false;
+    comparisons = 0;
     if (!paused) toggle(1);
     frames = [];
     i = 0;
@@ -22,7 +23,6 @@ function init({ type, newA, length, initialA }) {
         i = array.length - 1;
         j = 0;
     } else if (type === "selection") {
-        i = 0;
         j = i + 1;
         m = i;
     } else if (type === "insertion") {
@@ -32,14 +32,7 @@ function init({ type, newA, length, initialA }) {
         m = array.slice().map(a => [a]);
         j = 0;
     } else if (type === "quick") {
-        frames = [];
-        i = 0;
-        j = [];
-        if (array.length < 300) QuickSort([].concat(array), 0, array.length - 1, true);
-        else {
-            let coords = QuickSort([].concat(array), 0, array.length - 1, false);
-            if (coords) j.push(coords);
-        }
+        j = [[[0, array.length - 1]]];
     }
 }
 
