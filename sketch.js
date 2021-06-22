@@ -17,6 +17,12 @@ let i = 0;
 let j = 0;
 let m = 0;
 
+let s = 1;
+let results = {};
+let t;
+let avgs = [];
+let inc = 2;
+
 function setup() {
     createCanvas(1200 + 450, 800);
     colorMode(HSB);
@@ -28,8 +34,16 @@ function draw() {
     noStroke();
 
     if (!paused && !done) {
-        let element = document.getElementById("slider");
-        for (let a = 0; a < Math.ceil((element.value ** 2) / 15); a++) {
+        let v = document.getElementById("slider").value;
+        let speed = Math.ceil((v ** 2) / 15);
+        let mult = v <= 40 ? 10 / (50 - v) : (v / 10) - 3;
+        let { length : len } =  array;
+        if (["bubble", "selection", "insertion"].includes(sort)) speed = Math.round(mult * (0.00067982018 * len ** 2 + 0.02882118 * len) + 1.363636);
+        else if (sort === "merge") speed = Math.round(mult * (0.000300949051 * len ** 2 + 0.18464036 * len) + 16.1363636);
+        else if (sort === "quick") speed = Math.round(mult * (0.000044505929 * len ** 2  + 0.223883794 * len) - 12.6377708);
+        else speed = s;
+        if (speed < 1) speed = 1;
+        for (let a = 0; a < speed; a++) {
             if (sort === "bubble") {
                 if (j >= i) {
                     if (i < 1) continue;
@@ -62,6 +76,10 @@ function draw() {
                 currBars = [j];
                 comparisons++;
                 j++;
+            } else if (sort === "heap") {
+                if (i >= frames.length) continue;
+                array = frames[i];
+                i++;
             } else if (sort === "merge") {
                 if (a % 15 === 0) {
                     if (i >= frames.length) {
@@ -104,6 +122,7 @@ function draw() {
                                 j[0].splice(0, 1);
                                 if (j[0].length === 0) j.splice(0, 1);
                                 if (left < right) {
+                                    //let pivot = array[Math.floor((left + right) / 2)];
                                     let pivot = array[right];
                                     let b = left - 1;
                                     for (let j = left; j < right; j++) {
@@ -117,6 +136,7 @@ function draw() {
                                     frames.push([[0, left, b, right], ...array]);
                                     b++;
                                     [array[right], array[b]] = [array[b], array[right]];
+                                    //console.log(b, pivot)
                                     array[b] = pivot;
                                     frames.push([[0, left, b, right], ...array]);
                                     j.splice(0, 0, [[left, b - 1], [b + 1, right]]);
@@ -141,8 +161,13 @@ function draw() {
     }
 
     if (done && currBars[0] < array.length - 1) {
-        currBars[0] += Math.floor(array.length / 40);
-        if (currBars[0] >= array.length - 1 && !paused) toggle(1);
+        let amt = Math.floor(array.length / 40);
+        if (amt === 0) amt = 1;
+        currBars[0] += amt;
+        if (currBars[0] >= array.length - 1 && !paused) {
+            currBars = [];
+            toggle(1);
+        }
     }
 
     fill(0);
