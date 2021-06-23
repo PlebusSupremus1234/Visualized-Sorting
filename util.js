@@ -35,7 +35,7 @@ function init({ type, newA, length, initialA }) {
         m = array.slice().map(a => [a]);
         j = 0;
     } else if (type === "quick") {
-        j = [[[0, array.length - 1]]];
+        j = [[0, array.length - 1]];
     }
 }
 

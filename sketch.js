@@ -4,11 +4,6 @@ let spacing;
 let paused = true;
 let done = false;
 
-let settings = {
-    showCurrBars: true,
-    showBarColors: false
-};
-
 let currBars = [];
 let frames = [];
 
@@ -16,6 +11,12 @@ let comparisons = 0;
 let i = 0;
 let j = 0;
 let m = 0;
+
+let settings = {
+    showCurrBars: true,
+    showBarColors: false
+};
+let cshift = 0;
 
 let s = 1;
 let results = {};
@@ -26,7 +27,7 @@ let inc = 2;
 function setup() {
     createCanvas(1200 + 450, 800);
     colorMode(HSB);
-    init({ type: "bubble", newA: true, length: 240 });
+    init({ type: "bubble", newA: true, length: 100 });
 }
 
 function draw() {
@@ -115,33 +116,35 @@ function draw() {
                 if (a % 15 === 0) {
                     if (i >= frames.length) {
                         if (j.length > 0) {
-                            let l = frames.length;
-                            while (l === frames.length && j[0]) {
-                                let left = j[0][0][0];
-                                let right = j[0][0][1];
-                                j[0].splice(0, 1);
-                                if (j[0].length === 0) j.splice(0, 1);
-                                if (left < right) {
-                                    //let pivot = array[Math.floor((left + right) / 2)];
-                                    let pivot = array[right];
-                                    let b = left - 1;
-                                    for (let j = left; j < right; j++) {
-                                        if (array[j] < pivot) {
-                                            frames.push([[1, left, j, right], ...array]);
-                                            b++;
-                                            [array[b], array[j]] = [array[j], array[b]];
-                                            frames.push([[1, left, j, right], ...array]);
-                                        }
-                                    }
-                                    frames.push([[0, left, b, right], ...array]);
-                                    b++;
-                                    [array[right], array[b]] = [array[b], array[right]];
-                                    //console.log(b, pivot)
-                                    array[b] = pivot;
-                                    frames.push([[0, left, b, right], ...array]);
-                                    j.splice(0, 0, [[left, b - 1], [b + 1, right]]);
+                            let ileft = j[0][0],
+                                left = ileft,
+                                iright = j[0][1],
+                                right = iright;
+                            let pivot = Math.floor((left + right) / 2);
+                            while (left <= right) {
+                                if (array[left] <= array[pivot]) left++;
+                                else if (array[right] >= array[pivot]) right--;
+                                else {
+                                    [array[left], array[right]] = [array[right], array[left]];
+                                    left++;
+                                    right--;
                                 }
+                                frames.push([[1, left, pivot, right], ...array]);
                             }
+                            if (pivot < right) {
+                                [array[pivot], array[right]] = [array[right], array[pivot]];
+                                pivot = right;
+                            } else if (pivot > left) {
+                                [array[pivot], array[left]] = [array[left], array[pivot]];
+                                pivot = left;
+                            }
+                            frames.push([[1, left, pivot, right], ...array]);
+
+                            let insert = [];
+                            if (ileft < pivot - 1) insert.push([ileft, pivot - 1]);
+                            if (iright > pivot + 1) insert.push([pivot + 1, iright]);
+                            j.splice(0, 1, ...insert);
+                            frames.push([[1, left, pivot, right], ...array]);
                         }
                     }
 
@@ -153,11 +156,11 @@ function draw() {
                     }
                 }
             }
-        }
-        if (isEqual(array, sorted)) {
-            currBars = [0];
-            done = true;
-        }
+            if (isEqual(array, sorted)) {
+                currBars = [0];
+                done = true;
+            }
+        }        
     }
 
     if (done && currBars[0] < array.length - 1) {
@@ -174,12 +177,18 @@ function draw() {
     rect(0, 0, 1200, 800);
     if (array.length < 450) stroke(0);
     for (let i = 0; i < array.length; i++) {
-        let color = settings.showCurrBars && currBars.includes(i) ? [0, 100, 100] : (settings.showBarColors ? [(330 * array[i] / array.length) + 0 - 30, 100, 100] : [0, 0, 100]);
+        let color = settings.showCurrBars && currBars.includes(i) ? [0, 100, 100] : (settings.showBarColors ? [(330 * array[i] / array.length) - 30 + cshift, 100, 100] : [0, 0, 100]);
         fill(...color);
         rect(i * 1200 / array.length, height - array[i] * spacing, 1200 / array.length, array[i] * spacing);
     }
 
     document.getElementById("header").innerHTML = `${sort.charAt(0).toUpperCase() + sort.slice(1)} Sort - ${comparisons} Comparisons - Made by Plebus Supremus`;
+    let sliderD = document.getElementById("cshift").children;
+    let v = parseInt(sliderD[1].value) - 50;
+    if (cshift !== v) {
+        sliderD[0].innerHTML = `Color Shift (${v}):`;
+        cshift = v;
+    }
 
     noStroke();
     fill(0);

@@ -21,6 +21,8 @@ function toggle(id) {
         settings.showCurrBars = !settings.showCurrBars;
     } else if (id === 5) { //show colors
         settings.showBarColors = !settings.showBarColors;
+        let element = document.getElementById("cshift");
+        element.classList.toggle("visible");
     }
 }
 

@@ -1,4 +1,3 @@
 Todo:
-- Color shift
 - Sort Descs
 - Other sorts
