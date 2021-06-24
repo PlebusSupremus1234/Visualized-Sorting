@@ -1,3 +1,3 @@
 Todo:
-- Sort Descs
+- Bucket Sort
 - Other sorts

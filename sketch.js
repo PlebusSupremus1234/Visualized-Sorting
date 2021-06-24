@@ -39,7 +39,7 @@ function draw() {
         let speed = Math.ceil((v ** 2) / 15);
         let mult = v <= 40 ? 10 / (50 - v) : (v / 10) - 3;
         let { length : len } =  array;
-        if (["bubble", "selection", "insertion"].includes(sort)) speed = Math.round(mult * (0.00067982018 * len ** 2 + 0.02882118 * len) + 1.363636);
+        if (["bubble", "selection", "insertion", "cocktail"].includes(sort)) speed = Math.round(mult * (0.00067982018 * len ** 2 + 0.02882118 * len) + 1.363636);
         else if (sort === "merge") speed = Math.round(mult * (0.000300949051 * len ** 2 + 0.18464036 * len) + 16.1363636);
         else if (sort === "quick") speed = Math.round(mult * (0.000044505929 * len ** 2  + 0.223883794 * len) - 12.6377708);
         else speed = s;
@@ -77,10 +77,23 @@ function draw() {
                 currBars = [j];
                 comparisons++;
                 j++;
-            } else if (sort === "heap") {
-                if (i >= frames.length) continue;
-                array = frames[i];
-                i++;
+            } else if (sort === "cocktail") {
+                if (m) {
+                    if (i >= j[1]) {
+                        m = !m;
+                        j[1]--;
+                    }
+                    if (array[i] > array[i + 1]) [array[i], array[i + 1]] = [array[i + 1], array[i]];
+                    i++;
+                } else {
+                    if (i <= j[0]) {
+                        m = !m;
+                        j[0]++;
+                    }
+                    if (array[i] < array[i - 1]) [array[i], array[i - 1]] = [array[i - 1], array[i]];
+                    i--;
+                }
+                currBars = [i];
             } else if (sort === "merge") {
                 if (a % 15 === 0) {
                     if (i >= frames.length) {
@@ -182,7 +195,7 @@ function draw() {
         rect(i * 1200 / array.length, height - array[i] * spacing, 1200 / array.length, array[i] * spacing);
     }
 
-    document.getElementById("header").innerHTML = `${sort.charAt(0).toUpperCase() + sort.slice(1)} Sort - ${comparisons} Comparisons - Made by Plebus Supremus`;
+    document.getElementById("header").innerHTML = `${descs[sort].title} - ${comparisons} Comparisons - Made by Plebus Supremus`;
     let sliderD = document.getElementById("cshift").children;
     let v = parseInt(sliderD[1].value) - 50;
     if (cshift !== v) {

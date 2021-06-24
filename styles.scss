@@ -71,7 +71,7 @@
     position: absolute;
     top: 194px;
     left: 1465px;
-    width: 150px;
+    width: 170px;
     padding: 4px;
     border-radius: 5px;
     background-color: white;
@@ -205,5 +205,26 @@
     & input {
         width: 225px;
         margin-left: 15px;
+    }
+}
+
+#description {
+    position: absolute;
+    width: 400px;
+    left: 1223px;
+    top: 460px;
+    margin-left: 0px;
+    color: black;
+    font-family: sans-serif;
+    
+    & span {
+        font-weight: bold;
+        font-size: 30px;
+    }
+
+    & p {
+        margin: 0px;
+        margin-top: 5px;
+        font-size: 18px;
     }
 }
