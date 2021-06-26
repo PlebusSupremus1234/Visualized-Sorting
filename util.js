@@ -21,7 +21,6 @@ function init({ type, newA, length, initialA }) {
 	sort = type;
 	done = false;
 	comparisons = 0;
-	t = Date.now();
 	if (!paused) toggle(1);
 	frames = [];
 	i = 0;
@@ -38,14 +37,18 @@ function init({ type, newA, length, initialA }) {
 		i = 0;
 		j = [0, array.length - 1];
 		m = true;
+	} else if (type === "bucket") {
+		i = 0;
+		j = 0;
+		k = [0];
+		m = [];
+		for (let x = 0; x < Math.floor(array.length / 10) + 1; x++) m.push([]);
 	} else if (type === "merge") {
 		m = array.slice().map(a => [a]);
 		j = 0;
 	} else if (type === "quick") {
 		j = [[0, array.length - 1]];
 	}
-
-
 }
 
 function isEqual(a, b) {

@@ -23,6 +23,12 @@ let descs = {
         desc: parse`Cocktail shaker sort is a slight variation of bubble sort. It differs in that instead of repeatedly passing through the list from bottom to top,
         it passes alternately from bottom to top and then from top to bottom. It can achieve slightly better performance than a standard bubble sort.`
     },
+    bucket: {
+        title: "Bucket Sort",
+        desc: parse`Bucket sort is a sorting algorithm that works by distributing the elements of an array into a number of buckets. Each bucket is then sorted
+        individually. It is an example of Space-Time Tradeoff, where you can increase the space needed to reduce the time taken and vice versa. In this
+        visualisation, there are A.length / 10 buckets, making the space complexity high, and time complexity low.`
+    },
     merge: {
         title: "Merge Sort",
         desc: parse`Merge sort is a very efficient, general-purpose, and comparison-based sorting algorithm. Firstly, it divides the unsorted list into n sublists,

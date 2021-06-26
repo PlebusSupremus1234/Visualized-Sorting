@@ -11,6 +11,7 @@ let comparisons = 0;
 let i = 0;
 let j = 0;
 let m = 0;
+let k = [];
 
 let settings = {
     showCurrBars: true,
@@ -18,11 +19,11 @@ let settings = {
 };
 let cshift = 0;
 
-let s = 1;
-let results = {};
 let t;
+let s = 1;
+let inc = 1;
+let res = {};
 let avgs = [];
-let inc = 2;
 
 function setup() {
     createCanvas(1200 + 450, 800);
@@ -40,6 +41,7 @@ function draw() {
         let mult = v <= 40 ? 10 / (50 - v) : (v / 10) - 3;
         let { length : len } =  array;
         if (["bubble", "selection", "insertion", "cocktail"].includes(sort)) speed = Math.round(mult * (0.00067982018 * len ** 2 + 0.02882118 * len) + 1.363636);
+        else if (sort === "bucket") speed = k[0] === 2 ? 0.008122529644 * len + 0.111660079 : array.length / 50;
         else if (sort === "merge") speed = Math.round(mult * (0.000300949051 * len ** 2 + 0.18464036 * len) + 16.1363636);
         else if (sort === "quick") speed = Math.round(mult * (0.000044505929 * len ** 2  + 0.223883794 * len) - 12.6377708);
         else speed = s;
@@ -93,7 +95,45 @@ function draw() {
                     if (array[i] < array[i - 1]) [array[i], array[i - 1]] = [array[i - 1], array[i]];
                     i--;
                 }
+                comparisons++;
                 currBars = [i];
+            } else if (sort === "bucket") {
+                if (k[0] === 0) { //putting in buckets
+                    m[Math.floor(array[i] / 10)].push(array[i]);
+                    i++;
+                    if (i >= array.length) {
+                        k[0]++;
+                        i = 0;
+                    }
+                    currBars = [i];
+                } else if (k[0] === 1) { //animating
+                    array[i] = m.flat()[i];
+                    currBars = [i];
+                    i++;
+                    if (i >= array.length) {
+                        k[0]++;
+                        i = 0;
+                    }
+                } else if (k[0] === 2) { //sorting
+                    if (!k[1]) k.push(1);
+                    let bucket = m[i];
+                    if (!bucket || !bucket[j]) continue;
+                    if (j >= k[1]) {
+                        if (k[1] >= bucket.length - 1) {
+                            i++;
+                            k[1] = 0;
+                            bucket = m[i];
+                        }
+                        k[1]++;
+                        j = 0;
+                    }
+                    if (bucket[k[1]] < bucket[j]) [bucket[k[1]], bucket[j]] = [bucket[j], bucket[k[1]]];
+                    comparisons++;
+                    m[i] = bucket.slice();
+                    array = m.flat();
+                    currBars = [i * 10 + j];
+                    j++;
+                }
             } else if (sort === "merge") {
                 if (a % 15 === 0) {
                     if (i >= frames.length) {
