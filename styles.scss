@@ -42,24 +42,6 @@
     }
 }
 
-@-webkit-keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 #slider {
     position: absolute;
     width: 250px;
@@ -88,15 +70,14 @@
     margin-left: 13px;
 }
 
-#btn {
+.btn {
     background-color: #00a2ff;
     border-radius: 10px;
     position: absolute;
     color: white;
-    top: 240px;
-    left: 1224px;
     font-family: sans-serif;
-    font-size: 18px;
+    text-align: center;
+    width: 183px;
     padding: 12px;
     transition: all 0.2s;
     user-select: none;
@@ -110,7 +91,7 @@
 #checkbox-container {
     position: absolute;
     margin: 0px;
-    top: 350px;
+    top: 380px;
     left: 1222px;
 
     & div {
@@ -160,7 +141,7 @@
         margin: 0px;
         position: absolute;
         left: 1222px;
-        top: 300px;
+        top: 330px;
         font-family: sans-serif;
         font-size: 30px;
         font-weight: bold;
@@ -171,7 +152,7 @@
         display: inline;
         width: 50px;
         height: 25px;
-        top: 303px;
+        top: 333px;
         left: 1535px;
         padding-left: 10px;
         font-size: 15px;
@@ -181,14 +162,15 @@
 #minmax {
     position: absolute;
     font-family: sans-serif;
-    top: 265px;
-    left: 1493px;
+    font-size: 18px;
+    top: 285px;
+    left: 1480px;
 }
 
 #cshift {
     position: absolute;
     display: none;
-    top: 430px;
+    top: 460px;
     left: 1222px;
 
     &.visible {
@@ -212,7 +194,7 @@
     position: absolute;
     width: 400px;
     left: 1223px;
-    top: 460px;
+    top: 490px;
     margin-left: 0px;
     color: black;
     font-family: sans-serif;
@@ -226,5 +208,84 @@
         margin: 0px;
         margin-top: 5px;
         font-size: 18px;
+    }
+}
+
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#mcontent {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    width: 60%;
+    padding-left: 50px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    font-family: sans-serif;
+    padding-bottom: 30px;
+
+    & textarea {
+        width: 80%;
+        height: 100px;
+        resize: vertical;
+    }
+}
+
+#close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    transition: all 0.1s;
+    margin-right: 30px;
+    margin-top: 20px;
+  
+    &:hover, &:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
+
+#h {
+    font-weight: bold;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+#err {
+    color: red;
+    margin: 0px;
+    position: absolute;
+    left: 990px;
+    top: 110px;
+    width: 200px;
+}
+ 
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
     }
 }

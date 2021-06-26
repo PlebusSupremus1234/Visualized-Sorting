@@ -20,13 +20,14 @@
         <span id="restart" class="fa" onclick="toggle(2)">&#xf021;</span>
 
         <input type="range" min="1" max="100" value="40" id="slider">
-        <label type="button" id="btn" onclick="toggle(3)">Generate New Random Set</label>
+        <label type="button" class="btn" style="top: 230px;left: 1220px;font-size: 16px;" onclick="toggle(3)">Generate Random Array</label>
+        <label type="button" class="btn" style="top: 230px;left: 1440px;font-size: 16px;" onclick="toggle(4)">Generate Reversed Array</label>
         <div id="element-config"><p>Number of Elements:</p><input id="element-amt" type="number" min="1" max="1200" value="100" oninput="manage('input')"></div>
         <p id="minmax">(Min: 1, Max: 1200)</p>
 
         <div id="checkbox-container">
-            <div><p>Show Current Bars:</p><input type="checkbox" onclick="toggle(4)" checked></div>
-            <div><p>Show Colors:</p><input type="checkbox" onclick="toggle(5)"></div>
+            <div><p>Show Current Bars:</p><input type="checkbox" onclick="toggle(5)" checked></div>
+            <div><p>Show Colors:</p><input type="checkbox" onclick="toggle(6)"></div>
         </div>
 
         <div id="cshift"><p>Color Shift (0):</p><input type="range" min="0" max="100" value="50"></div>
@@ -41,8 +42,18 @@
             <option value="quick">Quick Sort</option>
         </select>
 
-        <div id="description">
-            <span></span><p></p>
+        <div id="description"><span></span><p></p></div>
+
+        <div id="modal">
+            <div id="mcontent">
+                <span id="close" onclick="document.getElementById('modal').style.display = 'none'">&times;</span>
+                <p id="h">Customise Array</p>
+                <p style="width:95%;">Here you can customise how the array is going to be like. Your input should be a complete array of whole positive integer values and increment by 1. For example, [10,4,7,8,2,1,6,3,9,5]</p>
+                <textarea></textarea>
+                <p id="err"></p>
+                <label type="button" class="btn" style="margin-left:15px;margin-top:27px;width: 150px;" onclick="toggle(7)">Initialise</label>
+            </div>
         </div>
+        <label type="button" class="btn" style="top: 280px;left: 1220px;font-size: 16px;" onclick="toggle(8)">Customise Array</label>
     </body>
 </html>

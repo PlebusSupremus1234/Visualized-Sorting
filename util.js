@@ -1,15 +1,23 @@
-function init({ type, newA, length, initialA }) {
+function init({ type, newA, length, custom, initialA }) {
 	if (newA) {
 		let l = length ? length : array.length;
 		sorted = [];
 		for (let i = 0; i < l; i++) sorted.push(i + 1);
 		array = sorted.slice();
-		for (let i = array.length - 1; i > 0; i--) {
-			let j = Math.floor(Math.random() * (i + 1));
-			[array[i], array[j]] = [array[j], array[i]];
+		if (custom) {
+			if (custom === "reverse") array.reverse();
+			else {
+				array = custom.slice();
+				sorted = array.slice().sort((a, b) => a - b);
+			}
+		} else {
+			for (let i = array.length - 1; i > 0; i--) {
+				let j = Math.floor(Math.random() * (i + 1));
+				[array[i], array[j]] = [array[j], array[i]];
+			}
 		}
 		initial = array.slice();
-		spacing = (height - 80) / l;
+		spacing = (height - 80) / array.length;
 	} else {
 		if (initialA) array = initial.slice();
 	}

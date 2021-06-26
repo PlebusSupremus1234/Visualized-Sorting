@@ -1,3 +1,2 @@
 Todo:
-- Reverse and custom options for array init
 - Other sorts

@@ -41,7 +41,7 @@ function draw() {
         let mult = v <= 40 ? 10 / (50 - v) : (v / 10) - 3;
         let { length : len } =  array;
         if (["bubble", "selection", "insertion", "cocktail"].includes(sort)) speed = Math.round(mult * (0.00067982018 * len ** 2 + 0.02882118 * len) + 1.363636);
-        else if (sort === "bucket") speed = k[0] === 2 ? 0.008122529644 * len + 0.111660079 : array.length / 50;
+        else if (sort === "bucket") speed = k[0] === 2 ? Math.round(mult * (0.008122529644 * len + 0.111660079)) : array.length / 50;
         else if (sort === "merge") speed = Math.round(mult * (0.000300949051 * len ** 2 + 0.18464036 * len) + 16.1363636);
         else if (sort === "quick") speed = Math.round(mult * (0.000044505929 * len ** 2  + 0.223883794 * len) - 12.6377708);
         else speed = s;
