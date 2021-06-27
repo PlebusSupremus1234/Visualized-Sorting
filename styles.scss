@@ -271,21 +271,17 @@
     color: red;
     margin: 0px;
     position: absolute;
-    left: 990px;
+    right: 10px;
     top: 110px;
     width: 200px;
 }
- 
+
 @keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
+    from { top: -300px; opacity: 0 }
+    to { top: 0; opacity: 1 }
 }
 
 @keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
 }

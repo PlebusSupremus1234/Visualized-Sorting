@@ -286,7 +286,7 @@
   color: red;
   margin: 0px;
   position: absolute;
-  left: 990px;
+  right: 10px;
   top: 110px;
   width: 200px;
 }
@@ -334,4 +334,3 @@
             transform: rotate(360deg);
   }
 }
-/*# sourceMappingURL=styles.css.map */
